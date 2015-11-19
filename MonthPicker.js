@@ -1,7 +1,7 @@
 /*
 https://github.com/KidSysco/jquery-ui-month-picker/
 
-Version 2.8
+Version 2.8.1
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
@@ -47,7 +47,7 @@ http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt.
     var _setOptionHooks = {
         ValidationErrorMessage: '_createValidationMessage',
         Disabled: '_setDisabledState', 
-        ShowIcon: '_showIcon', 
+        ShowIcon: '_updateButton', 
         Button: '_updateButton',
         ShowOn: '_updateFieldEvents',
         IsRTL: '_setRTL',
@@ -154,7 +154,7 @@ http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt.
     }
     
     $.MonthPicker = {
-	    VERSION: 2.8, // Added in version 2.4;
+	    VERSION: '2.8.1', // Added in version 2.4;
         i18n: {
             year: "Year",
             prevYear: "Previous Year",
@@ -233,7 +233,7 @@ http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt.
 
             _elem.removeClass('month-year-input').off(_eventsNs);
 
-            $(document).off(click + this.uuid);
+            $(document).off(_eventsNs + this.uuid);
 
             this._monthPickerMenu.remove();
             
@@ -581,18 +581,6 @@ http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt.
             return this.FormatMonth(date || this._parseMonth(), format || this.options.MonthFormat);
         },
 
-        _showIcon: function () {
-            var _button = this._monthPickerButton;
-            
-            if (!_button.length) {
-	            this._createButton();
-            } else {
-	            _button.toggle(!!this.options.ShowIcon);
-            }
-            
-            this._updateFieldEvents();
-        },
-
         _updateButton: function () {
             var isDisabled = this.options.Disabled;
 			
@@ -610,14 +598,16 @@ http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt.
             } catch (e) {
                 _button.filter('button,input').prop('disabled', isDisabled);
             }
+
+            this._updateFieldEvents();
         },
 
         _createButton: function () {
-	        var _elem = this.element;
-	        if (!this.options.ShowIcon || !_elem.is('input')) return;
+	        var _elem = this.element, _opts = this.options;
+	        if (_isInline(_elem)) return;
 	        
 	        var _oldButton = this._monthPickerButton.off(_eventsNs);
-            var _btnOpt = this.options.Button;
+            var _btnOpt = _opts.ShowIcon ? _opts.Button : false;
             
             if ($.isFunction(_btnOpt)) {
                 _btnOpt = _btnOpt.call(_elem[0], $.extend(true, {i18n: $.MonthPicker.i18n}, this.options));
@@ -641,9 +631,10 @@ http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt.
         },
 
         _updateFieldEvents: function () {
-	        this.element.off(click);
+            var _events = click + ' focus' + _eventsNs;
+	        this.element.off(_events);
             if (this.options.ShowOn === 'both' || !this._monthPickerButton.length) {
-				this.element.on(click, $proxy(this.Open, this));
+				this.element.on(_events, $proxy(this.Open, this));
             }
         },
 
@@ -674,6 +665,7 @@ http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt.
                     this.Close(event);
                     break;
                 case 27: // Escape
+                case 9: // Tab
                     this.Close(event);
                     break;
             }
