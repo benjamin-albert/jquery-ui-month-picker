@@ -112,8 +112,9 @@ the button.
 This rule removes the unnecessary padding so the text in
 the jump years button will be vericaly centred.
 */
-.month-picker-year-table .ui-button-text {
+.month-picker-year-table .ui-button-text, .month-picker-year-table .ui-button {
     padding: 0;
+	background: transparent;
 }
 
 .month-picker-month-table td {
