@@ -141,39 +141,41 @@ along with this program.  If not, see
         }
     }
 
+    var _isNewApi = $.ui.version >= '1.12';
+    function _prepareButtonOptions(opts) {
+        if (_isNewApi) {
+            var newOpts = opts;
+        }else{
+            var newOpts = {};
+            if (opts.showLabel !== void 0) newOpts.text = opts.showLabel;
+            if (opts.icon !== void 0) newOpts.icons.primary = opts.icon;
+            if (opts.label !== void 0) newOpts.label = opts.label;
+            if (opts.disabled !== void 0) newOpts.disabled = opts.disabled;
+        }
+        return newOpts;
+    }
+
+    $.fn.monthPickerButton = function(opts) {
+        return this.jqueryUIButton(_prepareButtonOptions(opts));
+    };
+
+    $.fn.monthPickerButtonOption = function(opts) {
+        return this.jqueryUIButton('option', _prepareButtonOptions(opts))
+    };
+
     function _makeDefaultButton(options) {
         // this refers to the associated input field.
-        if($.ui.version >= '1.12'){
-            return $('<span id="MonthPicker_Button_' + this.id + '" class="month-picker-open-button">' + options.i18n.buttonText + '</span>')
-            .jqueryUIButton({
+        return $('<span id="MonthPicker_Button_' + this.id + '" class="month-picker-open-button">' + options.i18n.buttonText + '</span>')
+            .monthPickerButton({
                 showLabel: false,
-                // Defaults to 'ui-icon-calculator'.
                 icon: options.ButtonIcon
             });
-        }else{
-            return $('<span id="MonthPicker_Button_' + this.id + '" class="month-picker-open-button">' + options.i18n.buttonText + '</span>')
-            .jqueryUIButton({
-                text: false,
-                icons: {
-                    // Defaults to 'ui-icon-calculator'.
-                    primary: options.ButtonIcon
-                }
-            });
-        }
     }
 
     function _applyArrowButton($el, dir) {
-        if($.ui.version >= '1.12'){
-            $el.jqueryUIButton('option', {
-                icon: 'ui-icon-circle-triangle-' + (dir ? 'w' : 'e')
+        $el.monthPickerButtonOption({
+            icon: 'ui-icon-circle-triangle-' + (dir ? 'w' : 'e')
         });
-        }else{
-            $el.jqueryUIButton('option', {
-                icons: {
-                    primary: 'ui-icon-circle-triangle-' + (dir ? 'w' : 'e')
-                }
-            })
-        }
     }
 
     function _isInline(elem) {
@@ -425,30 +427,19 @@ along with this program.  If not, see
             this._titleButton =
                 $('.month-picker-title', _menu)
                 .click($proxy(this._showYearsClickHandler, this))
-                .find('a').jqueryUIButton()
+                .find('a').monthPickerButton()
                 .removeClass(_defaultClass);
 
             this._applyJumpYearsHint();
             this._createValidationMessage();
 
-            if($.ui.version >= '1.12'){
-              this._prevButton = $('.month-picker-previous>a', _menu)
-                .jqueryUIButton({ showLabel: false })
+            this._prevButton = $('.month-picker-previous>a', _menu)
+                .monthPickerButton({ showLabel: false })
                 .removeClass(_defaultClass);
 
-               this._nextButton = $('.month-picker-next>a', _menu)
-                .jqueryUIButton({ showLabel: false })
+            this._nextButton = $('.month-picker-next>a', _menu)
+                .monthPickerButton({ showLabel: false })
                 .removeClass(_defaultClass);
-            }else{
-              this._prevButton = $('.month-picker-previous>a', _menu)
-                .jqueryUIButton({ text: false })
-                .removeClass(_defaultClass);
-
-               this._nextButton = $('.month-picker-next>a', _menu)
-                .jqueryUIButton({ text: false })
-                .removeClass(_defaultClass);
-				}
- 
 
             this._setRTL(_opts.IsRTL); //Assigns icons to the next/prev buttons.
 
@@ -464,7 +455,7 @@ along with this program.  If not, see
                 $tr.append('<td><a class="button-' + (i + 1) + '" /></td>');
             }
 
-            this._buttons = $('a', $table).jqueryUIButton();
+            this._buttons = $('a', $table).monthPickerButton();
 
             _menu.on('mousedown' + _eventsNs, function (event) {
                 event.preventDefault();
@@ -722,8 +713,8 @@ along with this program.  If not, see
             // a function. See Button option: Img tag tests for
             // more details.
             var _button = this._monthPickerButton;
-            try {
-                _button.jqueryUIButton('option', 'disabled', isDisabled);
+            try { 
+                _button.monthPickerButtonOption({'disabled': isDisabled});
             } catch (e) {
                 _button.filter('button,input').prop('disabled', isDisabled);
             }
@@ -873,7 +864,7 @@ along with this program.  If not, see
 
         _setPickerYear: function (year) {
             this._pickerYear = year || new Date().getFullYear();
-            this._titleButton.jqueryUIButton({ label: this._i18n('year') + ' ' + this._pickerYear });
+            this._titleButton.monthPickerButton({ label: this._i18n('year') + ' ' + this._pickerYear });
         },
 
         // When calling this method with a falsy (undefined) date
@@ -929,7 +920,7 @@ along with this program.  If not, see
             $.each(_months, function(index, monthName) {
                 $(me._buttons[index])
                     .on(click, {month: index+1}, _onMonthClick )
-                    .jqueryUIButton('option', 'label', monthName);
+                    .monthPickerButtonOption({'label': monthName});
             });
 
             this._decorateButtons();
@@ -942,7 +933,7 @@ along with this program.  If not, see
                 this._showYears();
 
                 var _label = this._i18n('backTo') + ' ' + this._getPickerYear();
-                this._titleButton.jqueryUIButton({ label: _label }).data( _clearHint )();
+                this._titleButton.monthPickerButton({ label: _label }).data( _clearHint )();
 
                 _event('OnAfterChooseYears', this)();
             } else {
@@ -989,7 +980,7 @@ along with this program.  If not, see
             for (var _counter = 0; _counter < 12; _counter++) {
                 var _year = _currYear + _yearDifferential;
 
-                var _btn = $( this._buttons[_counter] ).jqueryUIButton({
+                var _btn = $( this._buttons[_counter] ).monthPickerButton({
                         disabled: !_between(_year, _minYear, _maxYear),
                         label: _year
                     })
@@ -1065,7 +1056,7 @@ along with this program.  If not, see
                 var _month = (_curYear * 12) + i, _isBetween = _between(_month, _minDate, _maxDate);
 
                 $(this._buttons[i])
-                    .jqueryUIButton({ disabled: !_isBetween })
+                    .monthPickerButton({ disabled: !_isBetween })
                     .toggleClass(_todayClass, _isBetween && _month == _todaysMonth); // Highlights today's month.
             }
         }
