@@ -35,11 +35,12 @@ along with this program.  If not, see
     // conflict with Bootstrap.js button (#35)
     $.widget.bridge('jqueryUIButton', $.ui.button);
 
+    var _isNewApi = $.ui.version >= '1.12';
     var _speeds = $.fx.speeds;
     var _eventsNs = '.MonthPicker';
     var _textfieldClass = 'month-year-input';
     var _clearHint = 'month-picker-clear-hint';
-    var _iconClass = ($.ui.version >= '1.12') ? '.ui-button-icon' : '.ui-button-icon-primary';
+    var _iconClass = (_isNewApi) ? '.ui-button-icon' : '.ui-button-icon-primary';
     var _disabledClass = 'month-picker-disabled';
     var _todayClass = 'ui-state-highlight';
     var _selectedClass = 'ui-state-active';
@@ -141,14 +142,13 @@ along with this program.  If not, see
         }
     }
 
-    var _isNewApi = $.ui.version >= '1.12';
     function _prepareButtonOptions(opts) {
-        if (_isNewApi) {
+        if (_isNewApi || opts == undefined) {
             var newOpts = opts;
         }else{
             var newOpts = {};
             if (opts.showLabel !== void 0) newOpts.text = opts.showLabel;
-            if (opts.icon !== void 0) newOpts.icons.primary = opts.icon;
+            if (opts.icon !== void 0) newOpts.icons = {primary: opts.icon };
             if (opts.label !== void 0) newOpts.label = opts.label;
             if (opts.disabled !== void 0) newOpts.disabled = opts.disabled;
         }
@@ -864,7 +864,11 @@ along with this program.  If not, see
 
         _setPickerYear: function (year) {
             this._pickerYear = year || new Date().getFullYear();
-            this._titleButton.monthPickerButton({ label: this._i18n('year') + ' ' + this._pickerYear });
+            if(_isNewApi){
+                this._titleButton.monthPickerButton({ label: '<span class="ui-button-text">' +this._i18n('year') + ' ' + this._pickerYear + '</span>' });
+            }else{
+                this._titleButton.monthPickerButton({ label: this._i18n('year') + ' ' + this._pickerYear });
+            }
         },
 
         // When calling this method with a falsy (undefined) date
