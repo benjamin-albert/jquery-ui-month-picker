@@ -969,8 +969,8 @@ along with this program.  If not, see
                 .off(click)
                 .on(click, $proxy(this._addToYears, this, AMOUNT_TO_ADD));
 
-            _setDisabled(this._prevButton, _minYear && (_firstYear - 1) < _minYear);
-            _setDisabled(this._nextButton, _maxYear && (_firstYear + 12) -1 > _maxYear);
+            _setDisabled(this._prevButton, _minYear > 0 && (_firstYear - 1) < _minYear);
+            _setDisabled(this._nextButton, _maxYear > 0 && (_firstYear + 12) -1 > _maxYear);
 
             this._buttons.off(_eventsNs);
 
