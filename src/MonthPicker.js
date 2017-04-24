@@ -35,7 +35,8 @@ along with this program.  If not, see
     // conflict with Bootstrap.js button (#35)
     $.widget.bridge('jqueryUIButton', $.ui.button);
 
-    var _isNewApi = $.ui.version >= '1.12';
+    // TODO: Ask jQuery UI team if there is a better way to detect this.
+    var _isNewApi = parseFloat($.ui.version.replace(/\d\./, '')) >= 12;
     var _speeds = $.fx.speeds;
     var _eventsNs = '.MonthPicker';
     var _textfieldClass = 'month-year-input';
