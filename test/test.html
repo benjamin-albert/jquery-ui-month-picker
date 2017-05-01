@@ -5,13 +5,6 @@
     <title>jQuery UI Month Picker tests</title>
     <meta charset="UTF-8">
 
-    <!--flick smoothness-->
-    <!-- Make sure the plugin can handle  Bootstrap's CSS (#35) -->
-    <link rel="stylesheet" type="text/css" href="../bower_components/bootstrap/dist/css/bootstrap.css" />
-    <link rel="stylesheet" type="text/css" href="../src/MonthPicker.css" />
-    <link rel="stylesheet" type="text/css" href="test.css" />
-    <link rel="stylesheet" href="../bower_components/qunit/qunit/qunit.css" />
-
     <!-- Test against jQuery 1.9.1 -->
     <script src="../bower_components/jquery/jquery.js"></script>
 
@@ -19,18 +12,17 @@
     var src, css, newApi = /new-api/.test(location.hash);
     if (newApi) {
         src="../bower_components/jquery-ui-1.12.1/jquery-ui.js";
-        css='<link rel="stylesheet" type="text/css" href="../bower_components/jquery-ui-1.12.1/themes/smoothness/jquery-ui.css">';
+        css='../bower_components/jquery-ui-1.12.1/themes/smoothness/jquery-ui.css';
     } else {
         src="../bower_components/jquery-ui-1.9.2/ui/jquery-ui.js";
-        css='<link rel="stylesheet" type="text/css" href="../bower_components/jquery-ui-1.9.2/themes/smoothness/jquery-ui.css">';
+        css='../bower_components/jquery-ui-1.9.2/themes/smoothness/jquery-ui.css';
     }
 
     document.write('<script src="' + src + '">\x3c/script>');
-
-    document.write(css);
+    document.write('<link rel="stylesheet" type="text/css" href="' + css + '">');
     </script>
     <!-- Make sure the plugin can handle  Bootstrap's JS (#35) -->
-    <script src="../bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <!--<script src="../bower_components/bootstrap/dist/js/bootstrap.js"></script>-->
     <script src="../bower_components/qunit/qunit/qunit.js"></script>
     <script>
         if (typeof $ === 'undefined' || !$.ui || typeof QUnit === 'undefnied') {
@@ -51,6 +43,13 @@
     </script>
     <script src="../bower_components/jquery.maskedinput/dist/jquery.maskedinput.min.js"></script>
     <script src="../src/MonthPicker.js"></script>
+
+    <!-- Make sure the plugin can handle  Bootstrap's CSS (#35) -->
+    <link rel="stylesheet" type="text/css" href="../bower_components/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="../src/MonthPicker.css" />
+    <link rel="stylesheet" type="text/css" href="test.css" />
+    <link rel="stylesheet" href="../bower_components/qunit/qunit/qunit.css" />
+
     <script>
         $(function() {
             document.title = 'jQuery UI Month Picker v' + $.MonthPicker.VERSION + ' tests';
