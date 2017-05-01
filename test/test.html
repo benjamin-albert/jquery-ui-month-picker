@@ -8,8 +8,9 @@
     <!-- Test against jQuery 1.9.1 -->
     <script src="../bower_components/jquery/jquery.js"></script>
 
+    <!-- Grunt: inject-api-version -->
     <script>
-    var src, css, newApi = /new-api/.test(location.hash);
+    var src, css, newApi = window.NEW_JQUERY_UI_API || /new-api/.test(location.hash);
     if (newApi) {
         src="../bower_components/jquery-ui-1.12.1/jquery-ui.js";
         css='../bower_components/jquery-ui-1.12.1/themes/smoothness/jquery-ui.css';
