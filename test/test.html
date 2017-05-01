@@ -13,43 +13,61 @@
     <link rel="stylesheet" type="text/css" href="test.css" />
     <link rel="stylesheet" href="../bower_components/qunit/qunit/qunit.css" />
 
+    <!-- Test against jQuery 1.9.1 -->
     <script src="../bower_components/jquery/jquery.js"></script>
-    <!-- Test against 1.9.1 -->
-    <script src="../bower_components/jquery-ui/ui/jquery-ui.js"></script>
-    <!-- Test against 1.9.2 -->
+
+    <script>
+    var src, newApi = /new-api/.test(location.hash);
+    if (newApi) {
+        src="../bower_components/jquery-ui-1.12.1/jquery-ui.js";
+    } else {
+        src="../bower_components/jquery-ui-1.9.2/ui/jquery-ui.js";
+    }
+
+    document.write('<script src="' + src + '">\x3c/script>');
+    </script>
     <!-- Make sure the plugin can handle  Bootstrap's JS (#35) -->
     <script src="../bower_components/bootstrap/dist/js/bootstrap.js"></script>
     <script src="../bower_components/qunit/qunit/qunit.js"></script>
     <script>
         if (typeof $ === 'undefined' || !$.ui || typeof QUnit === 'undefnied') {
-				var message =
-					"Welcome to the jQuery UI Month Picker project.\n" +
-		            "\n" +
-	                "jQuery UI and QUnit are required for testing.\n" +
-	                "Please download node.js, 'cd ./jquery-ui-month-picker' and run 'npm install'.\n" +
-	                "\n" +
-	                "Tests can be ran from the command line using the 'grunt test' command.";
+            var message =
+                "Welcome to the jQuery UI Month Picker project.\n" +
+                "\n" +
+                "jQuery UI and QUnit are required for testing.\n" +
+                "Please download node.js, 'cd ./jquery-ui-month-picker' and run 'npm install'.\n" +
+                "\n" +
+                "Tests can be ran from the command line using the 'grunt test' command.";
 
-				if (alert) {
-					alert(message);
-				}
+            if (alert) {
+                alert(message);
+            }
 
-				throw message;
-			}
+            throw message;
+        }
     </script>
     <script src="../bower_components/jquery.maskedinput/dist/jquery.maskedinput.min.js"></script>
     <script src="../src/MonthPicker.js"></script>
     <script>
         $(function() {
-		       $(apiVersion).html("Version " + $.MonthPicker.VERSION);
-	        });
+            document.title = 'jQuery UI Month Picker v' + $.MonthPicker.VERSION + ' tests';
+
+            $('.jquery-ui-version')
+            .html('jQuery UI version: ' + $.ui.version + '.&nbsp;&nbsp;<a href="javascript:void(0)"></a>')
+            .find('a')
+            .text('Run against jQuery UI ' + (newApi ? '1.9.2' : '1.12.1') + ' API')
+            .click(function() {
+                window.location.hash = newApi ? '' : '#new-api';
+                window.location.reload();
+            });
+        });
     </script>
     <script src="test.js"></script>
 </head>
 
 <body>
     <div>
-        <h2 id='apiVersion'>Version @VERSION</h2>
+        <h3 class='jquery-ui-version'></h3>
 
         <div class="demo"> <b>.position() Integration Demonstration</b>
 

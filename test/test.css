@@ -45,3 +45,10 @@
 .text-right{
     text-align: right;
 }
+
+.jquery-ui-version {
+    line-height: 1.5;
+    border: 1px solid #FFD836;
+    padding: 10px;
+    background-color: #ffff8f;
+}
