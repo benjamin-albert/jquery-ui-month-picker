@@ -12,7 +12,7 @@
     "bower": "",
     "grunt": "^1.0.1",
     "grunt-contrib-cssmin": "^0.14.0",
-    "grunt-contrib-qunit": "^0.6.0",
+    "grunt-contrib-qunit": "^2.0.0",
     "grunt-contrib-uglify": "~0.6.0",
     "grunt-gh-pages": "^1.0.0"
   }

@@ -6,7 +6,6 @@
     <meta charset="UTF-8">
 
     <!--flick smoothness-->
-    <link rel="stylesheet" type="text/css" href="../bower_components/jquery-ui/themes/smoothness/jquery-ui.css">
     <!-- Make sure the plugin can handle  Bootstrap's CSS (#35) -->
     <link rel="stylesheet" type="text/css" href="../bower_components/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" type="text/css" href="../src/MonthPicker.css" />
@@ -17,14 +16,18 @@
     <script src="../bower_components/jquery/jquery.js"></script>
 
     <script>
-    var src, newApi = /new-api/.test(location.hash);
+    var src, css, newApi = /new-api/.test(location.hash);
     if (newApi) {
         src="../bower_components/jquery-ui-1.12.1/jquery-ui.js";
+        css='<link rel="stylesheet" type="text/css" href="../bower_components/jquery-ui-1.12.1/themes/smoothness/jquery-ui.css">';
     } else {
         src="../bower_components/jquery-ui-1.9.2/ui/jquery-ui.js";
+        css='<link rel="stylesheet" type="text/css" href="../bower_components/jquery-ui-1.9.2/themes/smoothness/jquery-ui.css">';
     }
 
     document.write('<script src="' + src + '">\x3c/script>');
+
+    document.write(css);
     </script>
     <!-- Make sure the plugin can handle  Bootstrap's JS (#35) -->
     <script src="../bower_components/bootstrap/dist/js/bootstrap.js"></script>
