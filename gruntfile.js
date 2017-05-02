@@ -50,6 +50,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-gh-pages');
   grunt.loadNpmTasks('grunt-contrib-copy');
 
-  grunt.registerTask('default', ['copy', 'test', 'uglify', 'cssmin']);
-  grunt.registerTask('test', ['qunit']);
+  grunt.registerTask('default', ['test', 'uglify', 'cssmin']);
+  grunt.registerTask('test', ['copy', 'qunit']);
 };
