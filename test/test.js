@@ -10,6 +10,35 @@
  * Tests can be ran from the command line using the 'grunt test' command.
  */
 
+// jQuery UI 1.12 button doesn't stop click handlers from being triggred 
+// the code tests for this issue and worksaround the issue.
+(function() {
+    $('<span />')
+        .button({ disabled: true })
+        .on('click', workaround)
+        .trigger('click');
+
+    function workaround() {
+        var _btnProto = $.ui.button.prototype;
+        var _create = _btnProto._create;
+
+        _btnProto._create = function() {
+            var ret = _create.apply(this, arguments);
+            var options = this.options;
+
+            this.element
+                .on( "click" + this.eventNamespace, function( event ) {
+                    if ( options.disabled ) {
+                        event.preventDefault();
+                        event.stopImmediatePropagation();
+                    }
+                });
+
+            return ret;
+        };
+    }
+}());
+
 var _today = new Date();
 
 // Set's the default animation speed to 1 ms to speed up
