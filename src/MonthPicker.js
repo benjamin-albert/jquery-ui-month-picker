@@ -146,10 +146,10 @@ along with this program.  If not, see
     function _prepareButtonOptions(opts) {
         if (_isNewApi || opts == undefined) {
             var newOpts = opts;
-        }else{
+        } else {
             var newOpts = {};
             if (opts.showLabel !== void 0) newOpts.text = opts.showLabel;
-            if (opts.icon !== void 0) newOpts.icons = {primary: opts.icon };
+            if (opts.icon !== void 0) newOpts.icons = { primary: opts.icon };
             if (opts.label !== void 0) newOpts.label = opts.label;
             if (opts.disabled !== void 0) newOpts.disabled = opts.disabled;
         }
@@ -865,11 +865,9 @@ along with this program.  If not, see
 
         _setPickerYear: function (year) {
             this._pickerYear = year || new Date().getFullYear();
-            if(_isNewApi){
-                this._titleButton.monthPickerButton({ label: '<span class="ui-button-text">' +this._i18n('year') + ' ' + this._pickerYear + '</span>' });
-            }else{
-                this._titleButton.monthPickerButton({ label: this._i18n('year') + ' ' + this._pickerYear });
-            }
+            this._titleButton.monthPickerButton({
+                label: this._i18n('year') + ' ' + this._pickerYear
+            });
         },
 
         // When calling this method with a falsy (undefined) date

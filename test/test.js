@@ -46,7 +46,7 @@ var _today = new Date();
 $.KidSysco.MonthPicker.prototype.options.Duration = 1;
 
 function _getPickerYear(_pickerMenu) {
-  return parseInt($('.month-picker-title span', _pickerMenu).text().replace(/\D/g, ''), 10);
+  return parseInt($('.month-picker-title', _pickerMenu).text().replace(/\D/g, ''), 10);
 }
 
 QUnit.module("Installation");
@@ -1602,7 +1602,7 @@ QUnit.test('Back to 2015 button', function (assert) {
     titleButton.trigger('click');
     var expectedTitle = $.MonthPicker.i18n.backTo + ' ' + nextYear;
 
-    assert.equal( $('.month-picker-title span', menu).text(), expectedTitle, 'The title button has the expected label' );
+    assert.equal( $('.month-picker-title', menu).text(), expectedTitle, 'The title button has the expected label' );
 
     /*
     Here we simulate the user jumping back and forth in
@@ -1625,7 +1625,7 @@ QUnit.test('Back to 2015 button', function (assert) {
     var nextClickCount = i;
 
     assert.notOk( hasNext, "Today's year is not visible after clicking next" );
-    assert.equal( $('.month-picker-title span', menu).text(), expectedTitle, 'Clicking next did not change the button label' );
+    assert.equal( $('.month-picker-title', menu).text(), expectedTitle, 'Clicking next did not change the button label' );
 
     for (var p = 0; p < nextClickCount * 2; p++) {
       backButton.trigger('click');
@@ -1633,7 +1633,7 @@ QUnit.test('Back to 2015 button', function (assert) {
 
     hasNext = buttons.is('.ui-state-highlight');
     assert.notOk( hasNext, "Today's year is not visible after clicking previous" );
-    assert.equal( $('.month-picker-title span', menu).text(), expectedTitle, 'Clicking previous did not change the button label' );
+    assert.equal( $('.month-picker-title', menu).text(), expectedTitle, 'Clicking previous did not change the button label' );
 
     // Click the title button and make sure it returnd us to the expected year.
     titleButton.trigger('click');
